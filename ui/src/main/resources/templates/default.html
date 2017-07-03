@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.vaadin.com/vaadin-core-elements/latest/webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="https://cdn.vaadin.com/vaadin-charts/3.0.0/vaadin-pie-chart.html" />
+
+<vaadin-pie-chart id="pie-with-legend">
+    <title>Browser market shares at a specific website, 2014</title>
+    <tooltip value-decimals="1" point-format="{series.name}: &lt;b&gt;{point.percentage:.1f}%&lt;/b&gt;">
+    </tooltip>
+    <plot-options>
+        <pie allow-point-select="true" show-in-legend="true" cursor="pointer">
+            <data-labels enabled="true" format="&lt;b&gt;{point.name}&lt;/b&gt;:    {point.percentage} %">
+            </data-labels>
+        </pie>
+    </plot-options>
+
+    <data-series name="Browser share">
+        <data>
+            ["Firefox", 45.0], ["IE", 26.8], ["Chrome", 12.8], ["Safari", 8.5], ["Opera", 6.2], ["Others", 0.7],
+        </data>
+    </data-series>
+</vaadin-pie-chart>
+</html>

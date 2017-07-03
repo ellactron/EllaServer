@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+/EllaServer.iml
+/.idea/
+/provisioning/provisioning.iml
+/provisioning/src/main/resources/rsa_id.pub
+/provisioning/src/main/resources/rsa_id
+/common/common.iml
+/ui/src/main/angular/node_modules/
+/ui/src/main/angular/dist/
+/ui/ui.iml

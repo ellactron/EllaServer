@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>service</artifactId>
+        <groupId>com.ellactron</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>provisioning</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <tinybrick.version>1.0.0-SNAPSHOT</tinybrick.version>
+        <spring.boot.version>1.4.0.RELEASE</spring.boot.version>
+        <spring.boot.jps.version>1.5.4.RELEASE</spring.boot.jps.version>
+        <akka.actor.version>2.5.1</akka.actor.version>
+        <akka.http.version>10.0.6</akka.http.version>
+    </properties>
+
+    <dependencies>
+        <!-- Tinybrick -->
+        <dependency>
+            <groupId>net.tinybrick</groupId>
+            <artifactId>web-core</artifactId>
+            <version>${tinybrick.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.tinybrick</groupId>
+            <artifactId>web-security</artifactId>
+            <version>${tinybrick.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.tinybrick</groupId>
+            <artifactId>doc-swagger</artifactId>
+            <version>${tinybrick.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.jps.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-entitymanager</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.10.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.2.10.Final</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor_2.11 -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_${scala.major.version}</artifactId>
+            <version>${akka.actor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-http_${scala.major.version}</artifactId>
+            <version>${akka.http.version}</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-http-core_${scala.major.version}</artifactId>
+            <version>${akka.http.version}</version>
+        </dependency>-->
+
+        <!-- Ellactron components -->
+        <dependency>
+            <groupId>com.ellactron</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>
