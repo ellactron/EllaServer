@@ -3,6 +3,8 @@ package com.ellactron.provissioning.entities
 import java.util.Date
 import javax.persistence._
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 /**
   * Created by ji.wang on 2017-07-02.
   */
@@ -11,9 +13,9 @@ import javax.persistence._
 class User {
   @Id
   @Column(name="user_id")
-  @GeneratedValue
-  private var id: Long = _
-  def setId(value:Long):Unit = id = value
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private var id: Integer = _
+  def setId(value:Integer):Unit = id = value
   def getId = id
 
   @Column(name="account", nullable = false)
@@ -21,6 +23,7 @@ class User {
   def setUsername(value:String):Unit = username = value
   def getUsername = username
 
+  @JsonIgnore
   @Column(name="password")
   private var password:String = _
   def setPassword(value:String):Unit = password = value

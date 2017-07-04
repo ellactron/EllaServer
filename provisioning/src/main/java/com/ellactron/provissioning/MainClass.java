@@ -6,6 +6,7 @@ package com.ellactron.provissioning;
 
 import com.ellactron.provissioning.configuration.RepositoryConfiguration;
 import com.ellactron.provissioning.configuration.ServiceConfigure;
+import net.tinybrick.database.tx.configuration.TransactionManagerConfigure;
 import net.tinybrick.security.configure.SecurityConfigure;
 import net.tinybrick.web.configure.ApplicationCoreConfigure;
 import org.apache.log4j.Logger;
@@ -13,13 +14,16 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@EnableWebMvc
 @ComponentScan
 @Import(value = {
         ApplicationCoreConfigure.class,
         ServiceConfigure.class,
         RepositoryConfiguration.class,
-        SecurityConfigure.class/*,
+        SecurityConfigure.class,
+        TransactionManagerConfigure.class/*,
         AipDocConfigure.class*/})
 public class MainClass {
     static Logger logger = Logger.getLogger(MainClass.class);

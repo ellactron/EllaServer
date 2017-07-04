@@ -20,14 +20,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class UserControllersTestCases extends ControllerTestBase {
   @Test
   @throws[Exception]
-  def TestUserRegisterController() {
+  def testUserRegisterController() {
     val resultActions = mockMvc.perform(post("/rest/v1/user/register")
       .session(session)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .param("username","username@domain.com")
       .param("password","pa55w0rd")
       .accept(MediaType.APPLICATION_JSON))
-    resultActions.andDo(print()).andExpect(status().isOk())
+    resultActions.andDo(print()).andExpect(status().isCreated())
   }
 
   @Test

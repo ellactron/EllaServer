@@ -9,7 +9,7 @@ import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.utils.json.JsonMapper
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
+import org.springframework.http.{HttpStatus, MediaType, ResponseEntity}
 import org.springframework.web.bind.annotation._
 import org.springframework.web.context.WebApplicationContext
 
@@ -34,12 +34,12 @@ class UserRegister {
       MediaType.APPLICATION_XML_VALUE,
       MediaType.TEXT_HTML_VALUE))
   @ResponseBody
-  def register(@Valid registerUserForm: RegisterUserForm): Map[String, Object] = {
-    accountService.registerUser(registerUserForm)
-
+  def register(@Valid registerUserForm: RegisterUserForm): ResponseEntity[AnyRef] = {
+    registerUserForm.setId(accountService.registerUser(registerUserForm))
+    registerUserForm.setPassword(null)
     val responseBody: Map[String, Object] = new HashMap()
-    responseBody.put("Greeting", "Hello!")
-    responseBody
+    responseBody.put("account", registerUserForm)
+    new ResponseEntity[AnyRef](responseBody, HttpStatus.CREATED)
   }
 
   @RequestMapping(

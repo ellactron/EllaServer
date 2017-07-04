@@ -33,6 +33,11 @@
         </dependency>
         <dependency>
             <groupId>net.tinybrick</groupId>
+            <artifactId>database-tx</artifactId>
+            <version>${tinybrick.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.tinybrick</groupId>
             <artifactId>doc-swagger</artifactId>
             <version>${tinybrick.version}</version>
         </dependency>
