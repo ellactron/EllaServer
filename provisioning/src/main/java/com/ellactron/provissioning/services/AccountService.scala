@@ -6,6 +6,7 @@ import com.ellactron.common.rest.RegisterUserForm
 import com.ellactron.provissioning.entities.User
 import com.ellactron.provissioning.exceptions.UserIsExistingException
 import com.ellactron.provissioning.repositories.UsersRepository
+import com.ellactron.provissioning.utils.MySQL
 import org.apache.log4j.Logger
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +28,7 @@ class AccountService {
   def registerUser(registerUserForm: RegisterUserForm): Int = {
     val user = new User()
     user.setUsername(registerUserForm.getUsername)
-    user.setPassword(registerUserForm.getPassword)
+    user.setPassword(MySQL.password(registerUserForm.getPassword).asInstanceOf[String])
     try {
       usersRepository.save(user)
     }
