@@ -8,6 +8,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 /**
   * Created by ji.wang on 2017-07-02.
   */
+/*@SqlResultSetMapping(
+  name="UserResultMapping",
+  classes = Array(new ConstructorResult(targetClass = classOf[User],
+  columns = Array(
+    new ColumnResult(name = "id"),
+    new ColumnResult(name = "username"),
+    new ColumnResult(name = "phoneNumber"),
+    new ColumnResult(name = "email"),
+    new ColumnResult(name = "registerDate"),
+    new ColumnResult(name = "lastActiviteDate")
+  ))))*/
 @Entity
 @Table(name = "users")
 class User {
@@ -45,5 +56,15 @@ class User {
     this()
     setUsername(username)
     setPassword(password)
+  }
+
+  def this(id:Integer, username:String, phoneNumber:String, email:String,registerDate:Date, lastActiviteDate:Date) {
+    this()
+    setId(id)
+    setUsername(username)
+    this.phoneNumber=phoneNumber
+    this.email=email
+    this.registerDate=registerDate
+    this.lastActiviteDate=lastActiviteDate
   }
 }

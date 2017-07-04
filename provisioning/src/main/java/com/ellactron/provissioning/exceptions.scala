@@ -6,4 +6,5 @@ package com.ellactron.provissioning
 package exceptions {
   class InvalidInputException(message:String) extends Exception(message){}
   class UserIsExistingException(message:String) extends Exception(message){}
+  class RecordVarifyException(message:String) extends Exception(message){}
 }

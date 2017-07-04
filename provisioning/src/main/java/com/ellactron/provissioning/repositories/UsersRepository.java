@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -21,8 +20,8 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     EntityManager em = null;
     //val query = em.createQuery("UPDATE Country SET population = population * 11 / 10 " + "WHERE c.population < :p")
 
-    @Query("from User u where u.username=:username and u.password=password(:password)")
-    public User findByCredential(@Param("username")String username, @Param("password")String password);
+    @Query("select NEW User(u.id, u.username, u.phoneNumber, u.email, u.registerDate, u.lastActiviteDate) from User u where u.username=:username and u.password=:password")
+    public List<User> findByCredential(@Param("username")String username, @Param("password")String password);
 
     @Query("from User u where u.username=:username")
     public List<User> findAccount(@Param("username")String username);

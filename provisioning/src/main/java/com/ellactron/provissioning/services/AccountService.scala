@@ -1,12 +1,14 @@
 package com.ellactron.provissioning.services
 
+import java.util.List
 import javax.transaction.Transactional
 
-import com.ellactron.common.rest.RegisterUserForm
+import com.ellactron.common.rest.CredentialForm
 import com.ellactron.provissioning.entities.User
-import com.ellactron.provissioning.exceptions.UserIsExistingException
+import com.ellactron.provissioning.exceptions.{RecordVarifyException, UserIsExistingException}
 import com.ellactron.provissioning.repositories.UsersRepository
 import com.ellactron.provissioning.utils.MySQL
+import com.typesafe.config.ConfigException.Null
 import org.apache.log4j.Logger
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +27,7 @@ class AccountService {
 
   @throws(classOf[UserIsExistingException])
   @Transactional
-  def registerUser(registerUserForm: RegisterUserForm): Int = {
+  def registerUser(registerUserForm: CredentialForm): Int = {
     val user = new User()
     user.setUsername(registerUserForm.getUsername)
     user.setPassword(MySQL.password(registerUserForm.getPassword).asInstanceOf[String])
@@ -38,5 +40,21 @@ class AccountService {
 
     logger.debug("Account " + user.getUsername + " is created.")
     user.getId
+  }
+
+  def verifyCredential(credentialForm:CredentialForm): User = {
+    try {
+      val users = usersRepository.findByCredential(credentialForm.getUsername, MySQL.password(credentialForm.getPassword).asInstanceOf[String])
+      users match {
+        case null => null
+        case list => list.size() match{
+          case 0 => null
+          case _ => list.get(0)
+        }
+      }
+    }
+    catch {
+      case e: Exception => throw new RecordVarifyException(e.getMessage);
+    }
   }
 }

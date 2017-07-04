@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 /**
  * Created by ji.wang on 2017-07-02.
  */
-public class RegisterUserForm {
+public class CredentialForm {
     Integer userId;
     public Integer getId(){return userId; }
     public void setId(Integer id) {this.userId = id; }
@@ -33,8 +33,8 @@ public class RegisterUserForm {
     /**
      * Constructor
      */
-    public RegisterUserForm(){this(null,null);}
-    public RegisterUserForm(String username, String password) {
+    public CredentialForm(){this(null,null);}
+    public CredentialForm(String username, String password) {
         this.setPassword(password);
         this.setUsername(username);
     }

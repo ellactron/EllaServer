@@ -3,7 +3,7 @@ package com.ellactron.provissioning.controllers
 import java.util.{Date, HashMap, Map}
 import javax.validation.Valid
 
-import com.ellactron.common.rest.{DeviceTGT, RegisterUserForm}
+import com.ellactron.common.rest.{DeviceTGT, CredentialForm}
 import com.ellactron.provissioning.services.AccountService
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.utils.json.JsonMapper
@@ -34,7 +34,7 @@ class UserRegister {
       MediaType.APPLICATION_XML_VALUE,
       MediaType.TEXT_HTML_VALUE))
   @ResponseBody
-  def register(@Valid registerUserForm: RegisterUserForm): ResponseEntity[AnyRef] = {
+  def register(@Valid registerUserForm: CredentialForm): ResponseEntity[AnyRef] = {
     registerUserForm.setId(accountService.registerUser(registerUserForm))
     registerUserForm.setPassword(null)
     val responseBody: Map[String, Object] = new HashMap()

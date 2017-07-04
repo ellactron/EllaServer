@@ -1,12 +1,13 @@
 package com.ellactron.provissioning.user.services;
 
-import com.ellactron.common.rest.RegisterUserForm;
+import com.ellactron.common.rest.CredentialForm;
 import com.ellactron.provissioning.configuration.RepositoryConfiguration;
 import com.ellactron.provissioning.configuration.ServiceConfigure;
+import com.ellactron.provissioning.entities.User;
 import com.ellactron.provissioning.services.AccountService;
-import com.ellactron.provissioning.utils.MySQL;
 import net.tinybrick.test.web.unit.ServiceUnitTestBase;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -39,12 +40,29 @@ public class ServiceTestCase extends ServiceUnitTestBase {
     public void testRegisterUser() {
         try {
             accountService.registerUser(
-                    new RegisterUserForm(
+                    new CredentialForm(
                             "username@domain.com",
                             "bbb"));
         }
         catch(Exception e){
             logger.error(e.getMessage(), e);
         }
+    }
+
+    @Test
+    public void testVerifyCredential() {
+        User user = accountService.verifyCredential(new CredentialForm(
+                "username@domain.com",
+                "bbb"));
+        Assert.assertEquals("username@domain.com", user.getUsername());
+        Assert.assertNull(user.getPassword());
+    }
+
+    @Test
+    public void testVerifyNonCredential() {
+        User user = accountService.verifyCredential(new CredentialForm(
+                "none",
+                "bbb"));
+        Assert.assertNull(user);
     }
 }

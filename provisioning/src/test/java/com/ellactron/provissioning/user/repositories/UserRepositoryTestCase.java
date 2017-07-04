@@ -24,7 +24,7 @@ public class UserRepositoryTestCase extends DbUnitTestBase {
     private UsersRepository usersRepository;
 
     @Test
-    //@Transactional
+    @Transactional
     public void testCreation() throws Exception {
         logger.debug("testCreation()");
         User newUser = new User("AAA", (String) MySQL.password("bbb"));
