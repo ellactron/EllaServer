@@ -32,6 +32,11 @@
             <version>${tinybrick.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.tinybrick.security</groupId>
+            <artifactId>social</artifactId>
+            <version>${tinybrick.version}</version>
+        </dependency>
+        <dependency>
             <groupId>net.tinybrick</groupId>
             <artifactId>database-tx</artifactId>
             <version>${tinybrick.version}</version>

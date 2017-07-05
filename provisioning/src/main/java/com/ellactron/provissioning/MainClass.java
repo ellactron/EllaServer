@@ -8,6 +8,7 @@ import com.ellactron.provissioning.configuration.RepositoryConfiguration;
 import com.ellactron.provissioning.configuration.ServiceConfigure;
 import net.tinybrick.database.tx.configuration.TransactionManagerConfigure;
 import net.tinybrick.security.configure.SecurityConfigure;
+import net.tinybrick.security.social.configure.SecuritySocialConfigure;
 import net.tinybrick.web.configure.ApplicationCoreConfigure;
 import org.apache.log4j.Logger;
 import org.springframework.boot.Banner;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         ServiceConfigure.class,
         RepositoryConfiguration.class,
         SecurityConfigure.class,
+        SecuritySocialConfigure.class,
         TransactionManagerConfigure.class/*,
         AipDocConfigure.class*/})
 public class MainClass {

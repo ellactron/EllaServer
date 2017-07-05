@@ -42,7 +42,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
             accountService.registerUser(
                     new CredentialForm(
                             "username@domain.com",
-                            "bbb"));
+                            "pa55w0rd"));
         }
         catch(Exception e){
             logger.error(e.getMessage(), e);
@@ -53,7 +53,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
     public void testVerifyCredential() {
         User user = accountService.verifyCredential(new CredentialForm(
                 "username@domain.com",
-                "bbb"));
+                "pa55w0rd"));
         Assert.assertEquals("username@domain.com", user.getUsername());
         Assert.assertNull(user.getPassword());
     }
@@ -62,7 +62,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
     public void testVerifyNonCredential() {
         User user = accountService.verifyCredential(new CredentialForm(
                 "none",
-                "bbb"));
+                "pa55w0rd"));
         Assert.assertNull(user);
     }
 }

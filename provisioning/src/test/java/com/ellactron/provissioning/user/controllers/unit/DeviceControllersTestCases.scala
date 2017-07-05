@@ -1,17 +1,10 @@
 package com.ellactron.provissioning.user.controllers.unit
 
 import com.ellactron.provissioning.MainClass
-import com.ellactron.provissioning.configuration.ServiceConfigure
-import com.ellactron.provissioning.controllers.UserRegister
 import net.tinybrick.test.web.unit.ControllerTestBase
-import net.tinybrick.web.configure.ApplicationCoreConfigure
 import org.junit.Test
 import org.springframework.boot.test.SpringApplicationConfiguration
-import org.springframework.http.MediaType
 import org.springframework.test.context.TestPropertySource
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders._
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers._
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
 
 /**
   * Created by ji.wang on 2017-05-15.
