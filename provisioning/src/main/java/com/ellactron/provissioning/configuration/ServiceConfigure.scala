@@ -18,5 +18,5 @@ class ServiceConfigure {
   val logger = Logger.getLogger(this.getClass())
 
   @Bean def propertySourcesPlaceholderConfigurer(): PropertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer()
-  @Bean def SecurityService: ISecurityService = new com.ellactron.provissioning.security.SecurityService()
+  //@Bean def SecurityService: ISecurityService = new com.ellactron.provissioning.security.SecurityService()
 }

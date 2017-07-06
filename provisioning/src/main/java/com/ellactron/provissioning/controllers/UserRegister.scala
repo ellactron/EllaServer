@@ -4,7 +4,7 @@ import java.util.{Date, HashMap, Map}
 import javax.validation.Valid
 
 import com.ellactron.common.rest.{CredentialForm, DeviceTGT}
-import com.ellactron.provissioning.services.AccountService
+import com.ellactron.provissioning.security.SecurityService
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.utils.json.JsonMapper
 import org.apache.log4j.Logger
@@ -23,8 +23,7 @@ class UserRegister {
   val logger = Logger.getLogger(this.getClass())
 
   @Autowired private val appContext: WebApplicationContext = null
-  //@Autowired private val validator: LocalValidatorFactoryBean = null
-  @Autowired private val accountService: AccountService = null
+  @Autowired private val securityService: SecurityService = null
 
   @RequestMapping(
     value = Array("/user/register"),
@@ -35,7 +34,7 @@ class UserRegister {
       MediaType.TEXT_HTML_VALUE))
   @ResponseBody
   def register(@Valid registerUserForm: CredentialForm): ResponseEntity[AnyRef] = {
-    registerUserForm.setId(accountService.registerUser(registerUserForm))
+    registerUserForm.setId(securityService.registerUser(registerUserForm).getId)
     registerUserForm.setPassword(null)
     val responseBody: Map[String, Object] = new HashMap()
     responseBody.put("account", registerUserForm)

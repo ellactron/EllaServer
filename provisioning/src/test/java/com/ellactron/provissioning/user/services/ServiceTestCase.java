@@ -42,7 +42,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
             accountService.registerUser(
                     new CredentialForm(
                             "username@domain.com",
-                            "pa55w0rd"));
+                            "pa55w0rd"), true);
         }
         catch(Exception e){
             logger.error(e.getMessage(), e);

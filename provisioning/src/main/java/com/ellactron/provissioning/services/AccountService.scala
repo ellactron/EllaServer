@@ -26,7 +26,7 @@ class AccountService {
 
   @throws(classOf[UserIsExistingException])
   @Transactional
-  def registerUser(newUser: CredentialForm): Int = {
+  private def registerUser(newUser: CredentialForm): User = {
     val now = new Date();
 
     val user = new User()
@@ -35,6 +35,7 @@ class AccountService {
     user.setPassword(MySQL.password(newUser.getPassword).asInstanceOf[String])
     user.setRegisterDate(now)
     try {
+      logger.debug("Account " + newUser.getUsername + " is going to be created.")
       usersRepository.save(user)
     }
     catch {
@@ -42,54 +43,69 @@ class AccountService {
     }
 
     logger.debug("Account " + user.getUsername + " is created.")
-    user.getId
+    user
   }
 
-  def refactorUser(id:Int, user:User): Int ={
+  /**
+    *
+    * @param newUser
+    * @param failIfExisting
+    * @throws com.ellactron.provissioning.exceptions.UserIsExistingException
+    * @return
+    */
+  @throws(classOf[UserIsExistingException])
+  def registerUser(newUser: CredentialForm, failIfExisting: Boolean=true): User = {
+    val now = new Date();
+
+    usersRepository.findByUsername(newUser.getUsername) match {
+      case userList: util.ArrayList[User] => {
+        if (userList.size == 0) {
+          try {
+            registerUser(newUser)
+          }
+          catch {
+            case e: Exception => throw new UserIsExistingException(e.getMessage);
+          }
+        }
+        else {
+          if (failIfExisting) {
+            throw new UserIsExistingException(newUser.getUsername + " is existing")
+          }
+          else userList.get(0);
+        }
+      }
+    }
+  }
+
+  /*
+  @Transactional
+  def refactorUser(id:Int, user:User): User ={
     val now = new Date();
 
     user.setId(id)
     user.setLastActiviteDate(now)
     try {
       usersRepository.save(user)
+      logger.debug("Account " + user.getUsername + " is updated.")
     }
     catch {
       case e: Exception => throw new InvalidInputException(e.getMessage);
     }
-    user.getId
+    user
   }
+  */
 
-  @throws(classOf[UserIsExistingException])
-  @Transactional
-  def registerOrUpdateUser(registerUserForm: CredentialForm): Int = {
-    val now = new Date();
-
-    try {
-      usersRepository.findByUsername(registerUserForm.getUsername) match {
-        case userList: util.ArrayList[User] => {
-          if (userList.size > 0) {
-            logger.debug("Account " + registerUserForm.getUsername + " is going to be created.")
-            val user = userList.get(0);
-            user.setPassword(MySQL.password(registerUserForm.getPassword).asInstanceOf[String])
-            refactorUser(user.getId, user)
-          }
-          else {
-            registerUser(registerUserForm)
-          }
-        }
-      }
-    }
-    catch {
-      case e: Exception => throw new UserIsExistingException(e.getMessage);
-    }
-  }
-
-  def verifyCredential(credentialForm:CredentialForm): User = {
+  /**
+    *
+    * @param credentialForm
+    * @return
+    */
+  def verifyCredential(credentialForm: CredentialForm): User = {
     try {
       val users = usersRepository.findByCredential(credentialForm.getUsername, MySQL.password(credentialForm.getPassword).asInstanceOf[String])
       users match {
         case null => null
-        case list => list.size() match{
+        case list => list.size() match {
           case 0 => null
           case _ => list.get(0)
         }

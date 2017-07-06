@@ -18,7 +18,9 @@ package security {
   import org.springframework.beans.factory.annotation.Autowired
   import org.springframework.security.core.AuthenticationException
   import org.springframework.security.oauth2.provider.OAuth2Authentication
+  import org.springframework.stereotype.Service
 
+  @Service
   class SecurityService extends IOAuth2SecurityService {
     val logger = Logger.getLogger(this.getClass())
     @Autowired val accountService: AccountService = null
@@ -47,12 +49,16 @@ package security {
       null
     }
 
-    override def register(authentication: OAuth2Authentication, source: IOAuth2SecurityService.SOCIAL_SOURCE): AnyRef = {
+    def registerUser(newUser: CredentialForm): User = {
+      accountService.registerUser(newUser)
+    }
+
+    override def registerSocialUser(authentication: OAuth2Authentication, source: IOAuth2SecurityService.SOCIAL_SOURCE): AnyRef = {
       val username = source.toString + "\\" + URLEncoder.encode(authentication.getPrincipal.toString, "UTF-8")
       val password = String.valueOf(new Date().getTime)
 
       val user = new CredentialForm(username, password)
-      accountService.registerOrUpdateUser(user)
+      accountService.registerUser(user, false)
 
       encryptionManager.encrypt(username + ":" + password)
     }
