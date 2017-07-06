@@ -42,15 +42,23 @@ class User {
 
   @Column(name="phone_number")
   private var phoneNumber:String = _
+  def setPhoneNumber(phoneNumber:String) = this.phoneNumber = phoneNumber
+  def getPhoneNumber = phoneNumber
 
   @Column(name="email")
   private var email:String = _
+  def setEmail(email:String) = this.email = email
+  def getEmail = email
 
   @Column(name="register_datetime", nullable = false)
   private var registerDate:Date = _
+  def setRegisterDate(date: Date) = this.registerDate=date
+  def getRegisterDate = registerDate
 
   @Column(name="last_activite_datetime")
   private var lastActiviteDate:Date = _
+  def setLastActiviteDate(date: Date) = this.lastActiviteDate=date
+  def getLastActiviteDate = lastActiviteDate
 
   def this(username:String, password: String) {
     this()

@@ -29,13 +29,13 @@ public class UserRepositoryTestCase extends DbUnitTestBase {
         logger.debug("testCreation()");
         User newUser = new User("username", (String) MySQL.password("pa55w0rd"));
         usersRepository.save(newUser);
-        Assert.assertTrue(1 == usersRepository.findAccountByUsername("username").size());
+        Assert.assertTrue(1 == usersRepository.findByUsername("username").size());
     }
 
     @Test
     public void testFindAccountByName() throws Exception {
         logger.debug("testFindAccount()");
-        List<User> users = usersRepository.findAccountByUsername("123456");
+        List<User> users = usersRepository.findByUsername("123456");
         Assert.assertEquals(1, users.size());
     }
 }

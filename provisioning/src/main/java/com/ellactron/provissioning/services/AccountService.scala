@@ -1,10 +1,12 @@
 package com.ellactron.provissioning.services
 
+import java.util
+import java.util.Date
 import javax.transaction.Transactional
 
 import com.ellactron.common.rest.CredentialForm
 import com.ellactron.provissioning.entities.User
-import com.ellactron.provissioning.exceptions.{RecordVarifyException, UserIsExistingException}
+import com.ellactron.provissioning.exceptions.{InvalidInputException, RecordVarifyException, UserIsExistingException}
 import com.ellactron.provissioning.repositories.UsersRepository
 import com.ellactron.provissioning.utils.MySQL
 import org.apache.log4j.Logger
@@ -24,10 +26,14 @@ class AccountService {
 
   @throws(classOf[UserIsExistingException])
   @Transactional
-  def registerUser(registerUserForm: CredentialForm): Int = {
+  def registerUser(newUser: CredentialForm): Int = {
+    val now = new Date();
+
     val user = new User()
-    user.setUsername(registerUserForm.getUsername)
-    user.setPassword(MySQL.password(registerUserForm.getPassword).asInstanceOf[String])
+    user.setLastActiviteDate(now)
+    user.setUsername(newUser.getUsername)
+    user.setPassword(MySQL.password(newUser.getPassword).asInstanceOf[String])
+    user.setRegisterDate(now)
     try {
       usersRepository.save(user)
     }
@@ -37,6 +43,45 @@ class AccountService {
 
     logger.debug("Account " + user.getUsername + " is created.")
     user.getId
+  }
+
+  def refactorUser(id:Int, user:User): Int ={
+    val now = new Date();
+
+    user.setId(id)
+    user.setLastActiviteDate(now)
+    try {
+      usersRepository.save(user)
+    }
+    catch {
+      case e: Exception => throw new InvalidInputException(e.getMessage);
+    }
+    user.getId
+  }
+
+  @throws(classOf[UserIsExistingException])
+  @Transactional
+  def registerOrUpdateUser(registerUserForm: CredentialForm): Int = {
+    val now = new Date();
+
+    try {
+      usersRepository.findByUsername(registerUserForm.getUsername) match {
+        case userList: util.ArrayList[User] => {
+          if (userList.size > 0) {
+            logger.debug("Account " + registerUserForm.getUsername + " is going to be created.")
+            val user = userList.get(0);
+            user.setPassword(MySQL.password(registerUserForm.getPassword).asInstanceOf[String])
+            refactorUser(user.getId, user)
+          }
+          else {
+            registerUser(registerUserForm)
+          }
+        }
+      }
+    }
+    catch {
+      case e: Exception => throw new UserIsExistingException(e.getMessage);
+    }
   }
 
   def verifyCredential(credentialForm:CredentialForm): User = {

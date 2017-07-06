@@ -21,11 +21,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan
 @Import(value = {
         ApplicationCoreConfigure.class,
-        ServiceConfigure.class,
-        RepositoryConfiguration.class,
         SecurityConfigure.class,
         SecuritySocialConfigure.class,
-        TransactionManagerConfigure.class/*,
+        TransactionManagerConfigure.class,
+        ServiceConfigure.class,
+        RepositoryConfiguration.class/*,
         AipDocConfigure.class*/})
 public class MainClass {
     static Logger logger = Logger.getLogger(MainClass.class);

@@ -4,6 +4,7 @@ package com.ellactron.provissioning.user.controllers.unit
   * Created by ji.wang on 2017-05-09.
   */
 
+import java.net.URLEncoder
 import java.util.HashMap
 
 import com.ellactron.provissioning.MainClass
@@ -54,11 +55,28 @@ class UserControllersTestCases extends ControllerTestBase {
   @Test
   @throws[Exception]
   def testGetLoginToken(): Unit = {
-    val resultActions = GET("/login/token/" + getUsername + "/" + getPassword, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON)
+    val resultActions = GET("/login/token/"
+        + URLEncoder.encode(getUsername, "UTF-8")
+        + "/"
+        + URLEncoder.encode(getPassword, "UTF-8"),
+      MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON)
     resultActions.andDo(print).andExpect(status.isOk)
     val tokenJson = new JSONObject(resultActions.andReturn.getResponse.getContentAsString)
     val token = tokenJson.getString("token")
     if (null != encryptionManager) Assert.assertEquals(getUsername + ":" + getPassword, encryptionManager.decrypt(token))
+    else Assert.assertEquals(getUsername + ":" + getPassword, Codec.stringFromBas64(token))
+  }
+
+
+  @Test
+  @throws[Exception]
+  def testGetSiteTokenWithFacebookToken(): Unit = {
+    val resultActions = PUT("/login/facebook/accesstoken/EAAbPHNutvmUBANKg7nZBuKPewQAi6ZCKR5Wk8xwbC3UmG1sExfW2uDPh1NWDUXbXjxicwZA54oFUZBpUH9T9wDpfHNCgkm5Jd6gSnSXgf3jDLKkAx83WiYinDlDR1ve5xWddn45ZBHU97LlrqyaZAZCNz94Ex94Y0gmAqRwkZAmHtgZDZD",
+      MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON)
+    resultActions.andDo(print).andExpect(status.isOk)
+    val tokenJson = new JSONObject(resultActions.andReturn.getResponse.getContentAsString)
+    val token = tokenJson.getString("token")
+    if (null != encryptionManager) Assert.assertTrue(encryptionManager.decrypt(token).startsWith("FACEBOOK\\"))
     else Assert.assertEquals(getUsername + ":" + getPassword, Codec.stringFromBas64(token))
   }
 
