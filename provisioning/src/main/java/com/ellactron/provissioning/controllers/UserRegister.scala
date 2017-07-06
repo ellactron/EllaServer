@@ -3,7 +3,7 @@ package com.ellactron.provissioning.controllers
 import java.util.{Date, HashMap, Map}
 import javax.validation.Valid
 
-import com.ellactron.common.rest.{CredentialForm, DeviceTGT}
+import com.ellactron.common.forms.{CredentialForm, DeviceTGT}
 import com.ellactron.provissioning.security.SecurityService
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.utils.json.JsonMapper

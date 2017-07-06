@@ -4,7 +4,8 @@ import java.util
 import java.util.Date
 import javax.transaction.Transactional
 
-import com.ellactron.common.rest.CredentialForm
+import com.ellactron.common.forms.CredentialForm
+import com.ellactron.common.models.Account
 import com.ellactron.provissioning.entities.User
 import com.ellactron.provissioning.exceptions.{InvalidInputException, RecordVarifyException, UserIsExistingException}
 import com.ellactron.provissioning.repositories.UsersRepository
@@ -26,16 +27,14 @@ class AccountService {
 
   @throws(classOf[UserIsExistingException])
   @Transactional
-  private def registerUser(newUser: CredentialForm): User = {
+  private def registerUser(account: Account): Account = {
     val now = new Date();
 
-    val user = new User()
+    val user = getUserEntityFromAccount(account)
     user.setLastActiviteDate(now)
-    user.setUsername(newUser.getUsername)
-    user.setPassword(MySQL.password(newUser.getPassword).asInstanceOf[String])
     user.setRegisterDate(now)
     try {
-      logger.debug("Account " + newUser.getUsername + " is going to be created.")
+      logger.debug("Account " + account.getUsername + " is going to be created.")
       usersRepository.save(user)
     }
     catch {
@@ -43,25 +42,24 @@ class AccountService {
     }
 
     logger.debug("Account " + user.getUsername + " is created.")
-    user
+    getAccountFromUserEntity(user)
   }
 
   /**
     *
-    * @param newUser
+    * @param account
     * @param failIfExisting
     * @throws com.ellactron.provissioning.exceptions.UserIsExistingException
     * @return
     */
   @throws(classOf[UserIsExistingException])
-  def registerUser(newUser: CredentialForm, failIfExisting: Boolean=true): User = {
+  def registerUser(account: Account, failIfExisting: Boolean=true): Account = {
     val now = new Date();
-
-    usersRepository.findByUsername(newUser.getUsername) match {
+    usersRepository.findByUsername(getUserEntityFromAccount(account).getUsername) match {
       case userList: util.ArrayList[User] => {
         if (userList.size == 0) {
           try {
-            registerUser(newUser)
+            registerUser(account)
           }
           catch {
             case e: Exception => throw new UserIsExistingException(e.getMessage);
@@ -69,12 +67,39 @@ class AccountService {
         }
         else {
           if (failIfExisting) {
-            throw new UserIsExistingException(newUser.getUsername + " is existing")
+            throw new UserIsExistingException(account.getUsername + " is existing")
           }
-          else userList.get(0);
+          else {
+            account.setId(userList.get(0).getId)
+            account
+          }
         }
       }
     }
+  }
+
+  private def getUserEntityFromAccount(account: Account):User = {
+    if(null == account.getRealm || "DEFAULT" == account.getRealm){
+      new User(account.getUsername, account.getPassword match{
+        case null => null
+        case password:String => MySQL.password(password).asInstanceOf[String]
+      })
+    }
+    else {new User(account.getRealm + "\\" + account.getUsername, account.getPassword)}
+  }
+
+  private def getAccountFromUserEntity(user:User): Account = {
+    val account = new Account()
+    account.setPassword(user.getPassword)
+    val usernameParts = user.getUsername.split("\\\\")
+    val a = if(usernameParts.length > 1){
+      account.setRealm(usernameParts(0))
+      account.setUsername(usernameParts(1))
+    }
+    else
+      account.setUsername(usernameParts(0))
+
+    account
   }
 
   /*
@@ -97,17 +122,17 @@ class AccountService {
 
   /**
     *
-    * @param credentialForm
+    * @param credential
     * @return
     */
-  def verifyCredential(credentialForm: CredentialForm): User = {
+  def verifyCredential(credential: Account): Account = {
     try {
-      val users = usersRepository.findByCredential(credentialForm.getUsername, MySQL.password(credentialForm.getPassword).asInstanceOf[String])
+      val users = usersRepository.findByCredential(credential.getUsername, MySQL.password(credential.getPassword).asInstanceOf[String])
       users match {
         case null => null
         case list => list.size() match {
           case 0 => null
-          case _ => list.get(0)
+          case _ => getAccountFromUserEntity(list.get(0))
         }
       }
     }

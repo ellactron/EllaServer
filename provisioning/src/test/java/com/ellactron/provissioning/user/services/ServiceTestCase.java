@@ -1,6 +1,7 @@
 package com.ellactron.provissioning.user.services;
 
-import com.ellactron.common.rest.CredentialForm;
+import com.ellactron.common.forms.CredentialForm;
+import com.ellactron.common.models.Account;
 import com.ellactron.provissioning.configuration.RepositoryConfiguration;
 import com.ellactron.provissioning.configuration.ServiceConfigure;
 import com.ellactron.provissioning.entities.User;
@@ -40,7 +41,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
     public void testRegisterUser() {
         try {
             accountService.registerUser(
-                    new CredentialForm(
+                    new Account(
                             "username@domain.com",
                             "pa55w0rd"), true);
         }
@@ -51,7 +52,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
 
     @Test
     public void testVerifyCredential() {
-        User user = accountService.verifyCredential(new CredentialForm(
+        Account user = accountService.verifyCredential(new Account(
                 "username@domain.com",
                 "pa55w0rd"));
         Assert.assertEquals("username@domain.com", user.getUsername());
@@ -60,7 +61,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
 
     @Test
     public void testVerifyNonCredential() {
-        User user = accountService.verifyCredential(new CredentialForm(
+        Account user = accountService.verifyCredential(new Account(
                 "none",
                 "pa55w0rd"));
         Assert.assertNull(user);

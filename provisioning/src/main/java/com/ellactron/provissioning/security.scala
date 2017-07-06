@@ -8,7 +8,8 @@ package security {
   import java.util
   import java.util.Date
 
-  import com.ellactron.common.rest.CredentialForm
+  import com.ellactron.common.forms.CredentialForm
+  import com.ellactron.common.models.Account
   import com.ellactron.provissioning.entities.User
   import com.ellactron.provissioning.services.AccountService
   import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
@@ -29,15 +30,16 @@ package security {
     override def validate(token: IAuthenticationToken[_]): Unit = {
       token match {
         case t: UsernamePasswordToken => {
-          val usrname = if ((null == t.getRealm || t.getRealm.toUpperCase == "DEFAULT")) {
+          /*val usrname = if ((null == t.getRealm || t.getRealm.toUpperCase == "DEFAULT")) {
             t.getUsername
           }
           else {
             t.getRealm.toUpperCase + "\\" + t.getUsername
-          }
-          val credential = new CredentialForm(usrname, t.getPassword )
+          }*/
+          val credential = new Account(t.getUsername, t.getPassword )
+          credential.setRealm(t.getRealm)
           accountService.verifyCredential(credential) match{
-            case _: User => return
+            case _: Account => return
             case null => throw new AuthenticationException("Invalid credential"){}
           }
         }
@@ -49,18 +51,21 @@ package security {
       null
     }
 
-    def registerUser(newUser: CredentialForm): User = {
-      accountService.registerUser(newUser)
+    def registerUser(newUser: CredentialForm): Account = {
+      accountService.registerUser(new Account(newUser.getUsername, newUser.getPassword))
     }
 
     override def registerSocialUser(authentication: OAuth2Authentication, source: IOAuth2SecurityService.SOCIAL_SOURCE): AnyRef = {
-      val username = source.toString + "\\" + URLEncoder.encode(authentication.getPrincipal.toString, "UTF-8")
+      val username = URLEncoder.encode(authentication.getPrincipal.toString, "UTF-8")
       val password = String.valueOf(new Date().getTime)
 
-      val user = new CredentialForm(username, password)
-      accountService.registerUser(user, false)
-
-      encryptionManager.encrypt(username + ":" + password)
+      val account = new Account(username, password)
+      account.setRealm(source.toString)
+      val user = accountService.registerUser(account, false)
+      val socialUsername =
+        if( null == user.getRealm || "DEFAULT" == user.getRealm)user.getUsername
+        else user.getRealm + "\\" + user.getUsername
+      encryptionManager.encrypt(socialUsername + ":" + user.getPassword)
     }
   }
 }
