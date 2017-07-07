@@ -67,7 +67,6 @@ class UserControllersTestCases extends ControllerTestBase {
     else Assert.assertEquals(getUsername + ":" + getPassword, Codec.stringFromBas64(token))
   }
 
-
   @Test
   @throws[Exception]
   def testGetSiteTokenWithFacebookToken(): Unit = {

@@ -1,4 +1,4 @@
-package com.ellactron.common.rest;
+package com.ellactron.common.forms;
 
 import java.util.Date;
 

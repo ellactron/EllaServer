@@ -4,10 +4,9 @@ import java.util
 import java.util.Date
 import javax.transaction.Transactional
 
-import com.ellactron.common.forms.CredentialForm
 import com.ellactron.common.models.Account
 import com.ellactron.provissioning.entities.User
-import com.ellactron.provissioning.exceptions.{InvalidInputException, RecordVarifyException, UserIsExistingException}
+import com.ellactron.provissioning.exceptions.{RecordVarifyException, TokenExpiryException, UserIsExistingException}
 import com.ellactron.provissioning.repositories.UsersRepository
 import com.ellactron.provissioning.utils.MySQL
 import org.apache.log4j.Logger
@@ -53,7 +52,7 @@ class AccountService {
     * @return
     */
   @throws(classOf[UserIsExistingException])
-  def registerUser(account: Account, failIfExisting: Boolean=true): Account = {
+  def registerUser(account: Account, failIfExisting: Boolean = true): Account = {
     val now = new Date();
     usersRepository.findByUsername(getUserEntityFromAccount(account).getUsername) match {
       case userList: util.ArrayList[User] => {
@@ -78,21 +77,25 @@ class AccountService {
     }
   }
 
-  private def getUserEntityFromAccount(account: Account):User = {
-    if(null == account.getRealm || "DEFAULT" == account.getRealm){
-      new User(account.getUsername, account.getPassword match{
+  private def getUserEntityFromAccount(account: Account): User = {
+    if (null == account.getRealm || "DEFAULT" == account.getRealm) {
+      new User(account.getUsername, account.getPassword match {
         case null => null
-        case password:String => MySQL.password(password).asInstanceOf[String]
+        case password: String =>{
+          MySQL.password(password).asInstanceOf[String]
+        }
       })
     }
-    else {new User(account.getRealm + "\\" + account.getUsername, account.getPassword)}
+    else {
+      new User(account.getRealm + "\\" + account.getUsername, account.getPassword)
+    }
   }
 
-  private def getAccountFromUserEntity(user:User): Account = {
+  private def getAccountFromUserEntity(user: User): Account = {
     val account = new Account()
     account.setPassword(user.getPassword)
     val usernameParts = user.getUsername.split("\\\\")
-    val a = if(usernameParts.length > 1){
+    val a = if (usernameParts.length > 1) {
       account.setRealm(usernameParts(0))
       account.setUsername(usernameParts(1))
     }
@@ -126,18 +129,37 @@ class AccountService {
     * @return
     */
   def verifyCredential(credential: Account): Account = {
-    try {
-      val users = usersRepository.findByCredential(credential.getUsername, MySQL.password(credential.getPassword).asInstanceOf[String])
-      users match {
-        case null => null
-        case list => list.size() match {
-          case 0 => null
-          case _ => getAccountFromUserEntity(list.get(0))
+    val user = getUserEntityFromAccount(credential)
+
+    if (null == credential.getRealm || "DEFAULT" == credential.getRealm) {
+      try {
+        val users = usersRepository.findByCredential(user.getUsername, user.getPassword)
+        users match {
+          case null => null
+          case list => list.size() match {
+            case 0 => null
+            case _ => getAccountFromUserEntity(list.get(0))
+          }
         }
       }
+      catch {
+        case e: Exception => throw new RecordVarifyException(e.getMessage);
+      }
     }
-    catch {
-      case e: Exception => throw new RecordVarifyException(e.getMessage);
+    else {
+      if(!verifyTimestamp(new Date(java.lang.Long.valueOf(credential.getPassword)))) {
+        throw new TokenExpiryException("Token is expiry")
+      }
+      credential.setPassword((new Date).getTime().toString)
+      return credential
     }
+  }
+
+  def verifyTimestamp(timeStamp:Date): Boolean = {
+    import java.util.Calendar
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.WEEK_OF_MONTH, -1)
+    val deadline = calendar.getTime
+    deadline.before(timeStamp)
   }
 }

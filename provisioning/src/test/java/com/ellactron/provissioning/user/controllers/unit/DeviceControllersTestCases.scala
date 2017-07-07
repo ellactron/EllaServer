@@ -1,8 +1,10 @@
 package com.ellactron.provissioning.user.controllers.unit
 
 import com.ellactron.provissioning.MainClass
+import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.test.web.unit.ControllerTestBase
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.SpringApplicationConfiguration
 import org.springframework.test.context.TestPropertySource
 
@@ -13,6 +15,8 @@ import org.springframework.test.context.TestPropertySource
 @TestPropertySource(locations = Array("classpath:config/config.properties"))
 @SpringApplicationConfiguration(classes = Array(classOf[MainClass]))
 class DeviceControllersTestCases extends ControllerTestBase{
+  @Autowired(required = false) val encryptionManager: IEncryptionManager = null;
+
   @Test
   @throws[Exception]
   def TestDeviceProvisioningController() {

@@ -1,11 +1,10 @@
 package com.ellactron.provissioning.user.services;
 
-import com.ellactron.common.forms.CredentialForm;
 import com.ellactron.common.models.Account;
 import com.ellactron.provissioning.configuration.RepositoryConfiguration;
 import com.ellactron.provissioning.configuration.ServiceConfigure;
-import com.ellactron.provissioning.entities.User;
 import com.ellactron.provissioning.services.AccountService;
+import com.google.common.base.Function;
 import net.tinybrick.test.web.unit.ServiceUnitTestBase;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -14,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ji.wang on 2017-07-03.
@@ -65,5 +67,16 @@ public class ServiceTestCase extends ServiceUnitTestBase {
                 "none",
                 "pa55w0rd"));
         Assert.assertNull(user);
+    }
+
+    @Test public void testTimeExpiry() {
+        Function<Date, Boolean> dateObjectFunction = (Date a) -> {
+            return accountService.verifyTimestamp(a);
+        };
+        Assert.assertTrue(dateObjectFunction.apply(new Date()));
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -8);
+        Assert.assertFalse(dateObjectFunction.apply(cal.getTime()));
     }
 }
