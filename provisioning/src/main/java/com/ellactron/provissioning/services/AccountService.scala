@@ -94,6 +94,7 @@ class AccountService {
   private def getAccountFromUserEntity(user: User): Account = {
     val account = new Account()
     account.setPassword(user.getPassword)
+    account.setId(user.getId)
     val usernameParts = user.getUsername.split("\\\\")
     val a = if (usernameParts.length > 1) {
       account.setRealm(usernameParts(0))

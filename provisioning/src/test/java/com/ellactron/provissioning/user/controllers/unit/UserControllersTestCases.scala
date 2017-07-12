@@ -32,8 +32,8 @@ class UserControllersTestCases extends ControllerTestBase {
   @Test
   @throws[Exception]
   def testUserRegisterController() {
-    val resultActions = mockMvc.perform(post("/rest/v1/user/register")
-      .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    val resultActions = mockMvc.perform(post("/register")
+      .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
       .param("username", getUsername)
       .param("password", getPassword)
       .accept(MediaType.APPLICATION_JSON))
@@ -43,7 +43,7 @@ class UserControllersTestCases extends ControllerTestBase {
   @Test
   @throws[Exception]
   def testUserRegisterControllerWithInvalidUsername() {
-    val resultActions = mockMvc.perform(post("/rest/v1/user/register")
+    val resultActions = mockMvc.perform(post("/register")
       .session(session)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .param("username", "username")

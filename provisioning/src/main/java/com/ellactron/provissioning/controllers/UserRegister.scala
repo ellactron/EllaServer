@@ -16,9 +16,9 @@ import org.springframework.web.context.WebApplicationContext
 /**
   * Created by ji.wang on 2017-05-15.
   */
-@RestController
 //@EnableAutoConfiguration
-@RequestMapping(Array("/rest/v1"))
+//@RequestMapping(Array("/rest/v1"))
+@RestController
 class UserRegister {
   val logger = Logger.getLogger(this.getClass())
 
@@ -26,9 +26,9 @@ class UserRegister {
   @Autowired private val securityService: SecurityService = null
 
   @RequestMapping(
-    value = Array("/user/register"),
+    value = Array("/register"),
     method = Array(RequestMethod.POST),
-    consumes = Array(MediaType.ALL_VALUE),
+    consumes = Array(MediaType.APPLICATION_FORM_URLENCODED_VALUE),
     produces = Array(MediaType.APPLICATION_JSON_VALUE,
       MediaType.APPLICATION_XML_VALUE,
       MediaType.TEXT_HTML_VALUE))
@@ -42,7 +42,7 @@ class UserRegister {
   }
 
   @RequestMapping(
-    value = Array("/user/provisiondevice"),
+    value = Array("/register/device"),
     method = Array(RequestMethod.POST),
     consumes = Array(MediaType.ALL_VALUE),
     produces = Array(

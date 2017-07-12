@@ -31,7 +31,7 @@ class RestServiceTestCases extends ITTestBase{
     data.add("password", getPassword());
 
     val entity = post(
-      "http://localhost" + (if(0 == port)  "" else (":" + port)) + "/rest/v1/user/register",
+      "http://localhost" + (if(0 == port)  "" else (":" + port)) + "/register",
       data,
       Arrays.asList(MediaType.APPLICATION_XML),
       classOf[Map[String, Object]])
