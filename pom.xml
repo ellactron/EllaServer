@@ -50,10 +50,10 @@
         </profile>
 
         <profile>
-            <id>release</id>
+            <id>prod</id>
             <properties>
-                <spring.profiles.active>release</spring.profiles.active>
-                <env>release</env>
+                <spring.profiles.active>prod</spring.profiles.active>
+                <env>prod</env>
             </properties>
         </profile>
     </profiles>
