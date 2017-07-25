@@ -37,7 +37,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
     }
 
     @Autowired
-    AccountService accountService;;
+    AccountService accountService;
 
     @Test
     public void testRegisterUser() {
@@ -46,8 +46,7 @@ public class ServiceTestCase extends ServiceUnitTestBase {
                     new Account(
                             "username@domain.com",
                             "pa55w0rd"), true);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
     }
@@ -69,7 +68,8 @@ public class ServiceTestCase extends ServiceUnitTestBase {
         Assert.assertNull(user);
     }
 
-    @Test public void testTimeExpiry() {
+    @Test
+    public void testTimeExpiry() {
         Function<Date, Boolean> dateObjectFunction = (Date a) -> {
             return accountService.verifyTimestamp(a);
         };
