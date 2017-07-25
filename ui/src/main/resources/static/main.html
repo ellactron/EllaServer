@@ -39,11 +39,11 @@
 			<script src="js/linechart.js"></script>
 		</div -->
 		<div>
-			<button id="updateLineComboChartData">Update Data</button>
+			<!-- button id="updateLineComboChartData">Update Data</button>
 			<button id="addLineComboChartDataset">Add Dataset</button>
 			<button id="removeLineComboChartDataset">Remove Dataset</button>
 			<button id="addLineComboChartData">Add Data</button>
-			<button id="removeLineComboChartData">Remove Data</button>
+			<button id="removeLineComboChartData">Remove Data</button -->
 			<canvas id="line-combo-chart-area"></canvas>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 			<script src="js/linecombochart.js"></script>
@@ -71,7 +71,7 @@
 			<div class="circle" style="-webkit-animation: loading 0s infinite linear; animation: loading 0s infinite linear;"></div>
 			<div class="digits">Off</div>
 		</div>
-		<div id="addMeter" class="addMeter" onclick="addMeter()">
+		<div id="addMeter" class="addMeter" onclick="addMeter(randomScalingFactor(250))">
 			<div class="circle" style="-webkit-animation: loading 0s infinite linear; animation: loading 0s infinite linear;"></div>
 			<div class="digits">+</div>
 		</div>
@@ -98,14 +98,14 @@
 			
 			var op = randomScalingFactor(2);
 			var index = randomScalingFactor(doughnutChartConfig.data.datasets[0].data.length);
-			console.log(index);
+			//console.log(index);
 			
 			// Test summary chart
 			if(0 == op) {
-				removeData(index);
+				removeData(index, 1);
 			}
 			else {
-				addData();
+				addData(randomScalingFactor(100));
 			}
 			updateData();
 			
@@ -114,7 +114,7 @@
 				removeMeter(index);
 			}
 			else {
-				addMeter();
+				addMeter(randomScalingFactor(250));
 			}
 			
 			window.myDoughnut.update();

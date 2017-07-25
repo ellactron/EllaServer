@@ -6,13 +6,13 @@ var doughnutChartConfig = {
         legend: {
             position: 'right',
 			labels: {
-				boxWidth: 80,
-				fontSize: 25,
+				boxWidth: 25,
+				fontSize: 12,
 			}
         },
         title: {
             display: true,
-			fontSize: 30,
+			fontSize: 15,
 			fontStyle: 'bold',
 			fontColor: 'Red',
 			fontFamily: "'PT Sans Caption', sans-serif",
@@ -71,18 +71,17 @@ function updateData() {
     });
 }
 
-function addData(dataValue=function() {
-	return randomScalingFactor(100);
-}) {
+
+function addData(dataValue) {
 	doughnutChartConfig.data.labels.push('data #' + doughnutChartConfig.data.labels.length);
     doughnutChartConfig.data.datasets.forEach(function(dataset) {
-        dataset.data.push(randomScalingFactor(dataValue()));
+        dataset.data.push(randomScalingFactor(dataValue));
         dataset.backgroundColor.push(randomRgbString(1));
     });
 	return dataValue;
 }
 
-function removeData(index, number = 1) {
+function removeData(index, number) {
     doughnutChartConfig.data.labels.splice(index, number); // remove the label first
     doughnutChartConfig.data.datasets.forEach(function(dataset) {
 		dataset.data.splice(index, number);
@@ -99,48 +98,65 @@ function initDoughnutChart() {
 	//return myDoughnut
 };
 
-///////////////////////////////////////////////////////////////////////////////////
-// UI Actions - Single item
-//
-/*  */
-document.getElementById('updateData').addEventListener('click', function() {
-    updateData();
-    window.myDoughnut.update();
-});
+function updateDoughnutButtons() {
+	///////////////////////////////////////////////////////////////////////////////////
+	// UI Actions - Single item
+	//
+	/*  */
+	var updateDataButton = document.getElementById('updateData');
+	if(null != updateDataButton) {
+		updateDataButton.addEventListener('click', function() {
+			updateData();
+			window.myDoughnut.update();
+		});
+	}
 
-document.getElementById('addData').addEventListener('click', function() {
-    if (doughnutChartConfig.data.datasets.length > 0) {
-		addData();
-        window.myDoughnut.update();
-    }
-});
+	var addDataButton = document.getElementById('addData');
+	if(null != addDataButton) {
+		addDataButton.addEventListener('click', function() {
+			if (doughnutChartConfig.data.datasets.length > 0) {
+				addData();
+				window.myDoughnut.update();
+			}
+		});
+	}
 
-document.getElementById('removeData').addEventListener('click', function() {
-	removeData(randomScalingFactor(doughnutChartConfig.data.datasets[0].data.length) - 1);
-    window.myDoughnut.update();
-});
+	var removeDataButton = document.getElementById('removeData');
+	if(null != removeDataButton)
+		document.getElementById('removeData').addEventListener('click', function() {
+			removeData(randomScalingFactor(doughnutChartConfig.data.datasets[0].data.length) - 1);
+			window.myDoughnut.update();
+		});
 
-///////////////////////////////////////////////////////////////////////////////////
-// UI Actions - Batch add or remove
-//
-var colorNames = Object.keys(window.chartColors);
-document.getElementById('addDataset').addEventListener('click', function() {
-    var newDataset = {
-        backgroundColor: [],
-        data: [],
-        label: 'New dataset ' + doughnutChartConfig.data.datasets.length,
-    };
+	///////////////////////////////////////////////////////////////////////////////////
+	// UI Actions - Batch add or remove
+	//
+	var colorNames = Object.keys(window.chartColors);
+	
+	var addDataSetButton = document.getElementById('addDataset');
+	if(null != addDataSetButton) {
+		document.getElementById('addDataset').addEventListener('click', function() {
+			var newDataset = {
+				backgroundColor: [],
+				data: [],
+				label: 'New dataset ' + doughnutChartConfig.data.datasets.length,
+			};
 
-    for (var index = 0; index < doughnutChartConfig.data.labels.length; ++index) {
-        newDataset.data.push(randomScalingFactor(100));
-		newDataset.backgroundColor.push(randomRgbString(1));
-    }
+			for (var index = 0; index < doughnutChartConfig.data.labels.length; ++index) {
+				newDataset.data.push(randomScalingFactor(100));
+				newDataset.backgroundColor.push(randomRgbString(1));
+			}
 
-    doughnutChartConfig.data.datasets.push(newDataset);
-    window.myDoughnut.update();
-});
+			doughnutChartConfig.data.datasets.push(newDataset);
+			window.myDoughnut.update();
+		});
+	}
 
-document.getElementById('removeDataset').addEventListener('click', function() {
-    doughnutChartConfig.data.datasets.splice(0, 1);
-    window.myDoughnut.update();
-});
+	var removeDataSetButton = document.getElementById('removeDataset');
+	if(null != removeDataSetButton)
+		document.getElementById('removeDataset').addEventListener('click', function() {
+			doughnutChartConfig.data.datasets.splice(0, 1);
+			window.myDoughnut.update();
+		});
+}
+updateDoughnutButtons();

@@ -1,7 +1,6 @@
 package com.ellactron.ui;
 
 import com.ellactron.ui.configuration.UIConfiguration;
-import net.tinybrick.security.configure.SecurityConfigure;
 import net.tinybrick.web.configure.ApplicationCoreConfigure;
 import org.apache.log4j.Logger;
 import org.springframework.boot.Banner;
@@ -15,8 +14,8 @@ import org.springframework.context.annotation.Import;
 @ComponentScan
 @Import(value = {
         ApplicationCoreConfigure.class,
-        SecurityConfigure.class,
-        UIConfiguration.class})
+        UIConfiguration.class/*,
+        SecurityConfigure.class*/})
 public class MainClass {
     static Logger logger = Logger.getLogger(MainClass.class);
 

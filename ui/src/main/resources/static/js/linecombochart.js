@@ -1,4 +1,4 @@
-var timeFormat = 'MM/DD/YYYY HH:mm';
+var timeFormat = 'MM/DD/YYYY';
 
 function newDateString(days) {
     return moment().add(days, 'd').format(timeFormat);
@@ -66,18 +66,18 @@ var lineComboConfig = {
         },
 		legend: {
 			labels: {
-				boxWidth: 60,
-				fontSize: 20,
+				boxWidth: 25,
+				fontSize: 10,
 			}
         },
-		aspectRatio: 4,
+		aspectRatio: 2.5,
         scales: {
             xAxes: [{
                 type: "time",
                 display: true,
                 time: {
                     format: timeFormat,
-                    // round: 'day'
+                    round: false,
                 }
             }],
         },
@@ -94,59 +94,87 @@ function initLineComboChart() {
     window.myLineCombo = new Chart(ctx, lineComboConfig);
 };
 
-document.getElementById('updateLineComboChartData').addEventListener('click', function() {
-    lineComboConfig.data.datasets.forEach(function(dataset) {
-        dataset.data = dataset.data.map(function() {
-            return randomScalingFactor(100);
-        });
-    });
+function updateLineComboChartData() {
+	lineComboConfig.data.datasets.forEach(function(dataset) {
+		dataset.data = dataset.data.map(function() {
+			return randomScalingFactor(100);
+		});
+	});
+}
 
-    window.myLineCombo.update();
-});
+function addLineComboChartDataset(){
+	var colorNames = Object.keys(window.chartColors);
+	var colorName = colorNames[lineComboConfig.data.datasets.length % colorNames.length];
+	var newColor = window.chartColors[colorName];
+	var newDataset = {
+		label: 'Dataset ' + lineComboConfig.data.datasets.length,
+		borderColor: newColor,
+		backgroundColor: color(newColor).alpha(0.5).rgbString(),
+		type: 'line',
+		data: [],
+	};
 
-var colorNames = Object.keys(window.chartColors);
-document.getElementById('addLineComboChartDataset').addEventListener('click', function() {
-    var colorName = colorNames[lineComboConfig.data.datasets.length % colorNames.length];
-    var newColor = window.chartColors[colorName];
-    var newDataset = {
-        label: 'Dataset ' + lineComboConfig.data.datasets.length,
-        borderColor: newColor,
-        backgroundColor: color(newColor).alpha(0.5).rgbString(),
-		type: 'bar',
-        data: [],
-    };
+	for (var index = 0; index < lineComboConfig.data.labels.length; ++index) {
+		newDataset.data.push(randomScalingFactor(100));
+	}
 
-    for (var index = 0; index < lineComboConfig.data.labels.length; ++index) {
-        newDataset.data.push(randomScalingFactor(100));
-    }
+	lineComboConfig.data.datasets.push(newDataset);
+}
 
-    lineComboConfig.data.datasets.push(newDataset);
-    window.myLineCombo.update();
-});
+function removeLineComboChartDataset(index) {
+	lineComboConfig.data.datasets.splice(index, 1);
+}
 
-document.getElementById('removeLineComboChartDataset').addEventListener('click', function() {
-    lineComboConfig.data.datasets.splice(0, 1);
-    window.myLineCombo.update();
-});
+function addLineComboChartData() {
+	if (lineComboConfig.data.datasets.length > 0) {
+		lineComboConfig.data.labels.push(newDateString(lineComboConfig.data.labels.length));
+		for (var index = 0; index < lineComboConfig.data.datasets.length; ++index) {
+			lineComboConfig.data.datasets[index].data.push(randomScalingFactor(100));
+		}
+	}
+}
 
-document.getElementById('addLineComboChartData').addEventListener('click', function() {
-    if (lineComboConfig.data.datasets.length > 0) {
-        lineComboConfig.data.labels.push(newDateString(lineComboConfig.data.labels.length));
+function removeLineComboChartData(index) {
+	lineComboConfig.data.labels.splice(index, 1); // remove the label first
+	lineComboConfig.data.datasets.forEach(function(dataset, datasetIndex) {
+		lineComboConfig.data.datasets[datasetIndex].data.pop();
+	});
+}
 
-        for (var index = 0; index < lineComboConfig.data.datasets.length; ++index) {
-            lineComboConfig.data.datasets[index].data.push(randomScalingFactor(100));
-        }
+function updateLinecomboChartButtons() {
+	var updateLineComboChartDataButton = document.getElementById('updateLineComboChartData');
+	if(null != updateLineComboChartDataButton)
+		updateLineComboChartDataButton.addEventListener('click', function() {
+			updateLineComboChartData();
+			window.myLineCombo.update();
+		});
+	
+	var addLineComboChartDatasetButton = document.getElementById('addLineComboChartDataset');
+	if(null != addLineComboChartDatasetButton)
+		addLineComboChartDatasetButton.addEventListener('click', function() {
+			addLineComboChartDataset();
+			window.myLineCombo.update();
+		});
 
-        window.myLineCombo.update();
-    }
-});
+	var removeLineComboChartDatasetButton = document.getElementById('removeLineComboChartDataset');
+	if(null != removeLineComboChartDatasetButton)
+		removeLineComboChartDatasetButton.addEventListener('click', function() {
+			removeLineComboChartDataset(randomScalingFactor(lineComboConfig.data.datasets.length) - 1);
+			window.myLineCombo.update();
+		});
 
-document.getElementById('removeLineComboChartData').addEventListener('click', function() {
-    lineComboConfig.data.labels.splice(-1, 1); // remove the label first
+	var addLineComboChartDataButton = document.getElementById('addLineComboChartData');
+	if (null != addLineComboChartDataButton)
+		document.getElementById('addLineComboChartData').addEventListener('click', function() {
+			addLineComboChartData();
+			window.myLineCombo.update();
+		});
 
-    lineComboConfig.data.datasets.forEach(function(dataset, datasetIndex) {
-        lineComboConfig.data.datasets[datasetIndex].data.pop();
-    });
-
-    window.myLineCombo.update();
-});
+	var removeLineComboChartDataButton = document.getElementById('removeLineComboChartData');
+	if(null != removeLineComboChartDataButton)
+		document.getElementById('removeLineComboChartData').addEventListener('click', function() {
+			removeLineComboChartData(-1);
+			window.myLineCombo.update();
+		});
+};
+updateLinecomboChartButtons();

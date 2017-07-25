@@ -1,7 +1,5 @@
-function addMeter(dataValue=function() {
-	return randomScalingFactor(250);
-}) {
-	var value = dataValue();
+function addMeter(dataValue) {
+	var value = dataValue;
 	var speed = 61-60*value/250;
 	
 	var meterDiv = document.createElement('div');
@@ -27,6 +25,7 @@ function addMeter(dataValue=function() {
 function removeMeter(index) {
 	var meterDivs = document.getElementsByClassName("meter");
 	if(meterDivs.length > 0) {
-		meterDivs[index].remove();
+		//meterDivs[index].remove();
+		meterDivs[index].parentNode.removeChild(meterDivs[index])
 	}
 }
