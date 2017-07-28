@@ -11,6 +11,15 @@
     <artifactId>provisioning</artifactId>
     <packaging>jar</packaging>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
     <properties>
         <tinybrick.version>1.0.0-SNAPSHOT</tinybrick.version>
         <spring.boot.version>1.4.0.RELEASE</spring.boot.version>

@@ -4,7 +4,7 @@ import java.util.{Date, HashMap, Map}
 import javax.validation.Valid
 
 import com.ellactron.common.forms.{CredentialForm, DeviceTGT}
-import com.ellactron.provissioning.security.SecurityService
+import com.ellactron.provissioning.services.SecurityService
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.utils.json.JsonMapper
 import org.apache.log4j.Logger
@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext
   */
 //@EnableAutoConfiguration
 //@RequestMapping(Array("/rest/v1"))
-@RestController
+//@RestController
 class UserRegister {
   val logger = Logger.getLogger(this.getClass())
 

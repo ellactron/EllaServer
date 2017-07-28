@@ -1,28 +1,24 @@
-package com.ellactron.provissioning
+package com.ellactron.provissioning.services
 
 /**
   * Created by ji.wang on 2017-05-10.
   */
-package security {
+import java.net.URLEncoder
+import java.util
+import java.util.Date
 
-  import java.net.URLEncoder
-  import java.util
-  import java.util.Date
+import com.ellactron.common.forms.CredentialForm
+import com.ellactron.common.models.Account
+import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
+import net.tinybrick.security.authentication.{Authority, ISecurityService, Principal}
+import net.tinybrick.security.social.IOAuth2SecurityService
+import org.apache.log4j.Logger
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.{Authentication, AuthenticationException}
+import org.springframework.security.oauth2.provider.OAuth2Authentication
 
-  import com.ellactron.common.forms.CredentialForm
-  import com.ellactron.common.models.Account
-  import com.ellactron.provissioning.services.AccountService
-  import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
-  import net.tinybrick.security.authentication.{Authority, ISecurityService, Principal}
-  import net.tinybrick.security.social.IOAuth2SecurityService
-  import org.apache.log4j.Logger
-  import org.springframework.beans.factory.annotation.Autowired
-  import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-  import org.springframework.security.core.{Authentication, AuthenticationException}
-  import org.springframework.security.oauth2.provider.OAuth2Authentication
-  import org.springframework.stereotype.Service
-
-  @Service
+  //@Service
   class SecurityService extends IOAuth2SecurityService[String] with ISecurityService[Principal] {
     val logger = Logger.getLogger(this.getClass())
     @Autowired val accountService: AccountService = null
@@ -84,5 +80,3 @@ package security {
       encryptionManager.encrypt(socialUsername + ":" + user.getPassword)
     }
   }
-
-}
