@@ -4,10 +4,9 @@ package com.ellactron.provissioning;
  * Created by ji.wang on 2017-05-09.
  */
 
-import com.ellactron.provissioning.configuration.RepositoryConfiguration;
-import com.ellactron.provissioning.configuration.ServiceConfigure;
+import com.ellactron.provissioning.configuration.ApplicationConfiguration;
 import net.tinybrick.database.tx.configuration.TransactionManagerConfigure;
-import net.tinybrick.security.configure.SecurityConfigure;
+import net.tinybrick.security.configure.SecurityConfiguration;
 import net.tinybrick.security.social.configure.SecuritySocialConfigure;
 import net.tinybrick.web.configure.ApplicationCoreConfigure;
 import org.apache.log4j.Logger;
@@ -21,11 +20,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan
 @Import(value = {
         ApplicationCoreConfigure.class,
-        SecurityConfigure.class,
+        SecurityConfiguration.class,
         SecuritySocialConfigure.class,
         TransactionManagerConfigure.class,
-        ServiceConfigure.class,
-        RepositoryConfiguration.class/*,
+        ApplicationConfiguration.class/*,
         AipDocConfigure.class*/})
 public class MainClass {
     static Logger logger = Logger.getLogger(MainClass.class);

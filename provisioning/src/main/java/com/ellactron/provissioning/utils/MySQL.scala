@@ -8,7 +8,7 @@ import net.tinybrick.utils.crypto.DATA_FORMAT._
 import net.tinybrick.utils.crypto.SHA1
 
 object MySQL {
-  def password(pwd:String):AnyRef = {
+  def password(pwd: String): AnyRef = {
     "*" + SHA1.hash(SHA1.hash(pwd, RAW).asInstanceOf[Array[Byte]], HEX)
   }
 }

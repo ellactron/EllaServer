@@ -22,8 +22,8 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     //val query = em.createQuery("UPDATE Country SET population = population * 11 / 10 " + "WHERE c.population < :p")
 
     @Query("select NEW User(u.id, u.username, u.phoneNumber, u.email, u.registerDate, u.lastActiviteDate) from User u where u.username=:username and u.password=:password")
-    public List<User> findByCredential(@Param("username")String username, @Param("password")String password);
+    public List<User> findByCredential(@Param("username") String username, @Param("password") String password);
 
     @Query("select NEW User(u.id, u.username, u.phoneNumber, u.email, u.registerDate, u.lastActiviteDate) from User u where u.username=:username")
-    public List<User> findByUsername(@Param("username")String username);
+    public List<User> findByUsername(@Param("username") String username);
 }

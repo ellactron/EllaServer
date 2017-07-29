@@ -81,7 +81,7 @@ class AccountService {
     if (null == account.getRealm || "DEFAULT" == account.getRealm) {
       new User(account.getUsername, account.getPassword match {
         case null => null
-        case password: String =>{
+        case password: String => {
           MySQL.password(password).asInstanceOf[String]
         }
       })
@@ -148,7 +148,7 @@ class AccountService {
       }
     }
     else {
-      if(!verifyTimestamp(new Date(java.lang.Long.valueOf(credential.getPassword)))) {
+      if (!verifyTimestamp(new Date(java.lang.Long.valueOf(credential.getPassword)))) {
         throw new TokenExpiryException("Token is expiry")
       }
       credential.setPassword((new Date).getTime().toString)
@@ -156,7 +156,7 @@ class AccountService {
     }
   }
 
-  def verifyTimestamp(timeStamp:Date): Boolean = {
+  def verifyTimestamp(timeStamp: Date): Boolean = {
     import java.util.Calendar
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.WEEK_OF_MONTH, -1)

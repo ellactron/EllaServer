@@ -23,56 +23,70 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 @Table(name = "users")
 class User {
   @Id
-  @Column(name="user_id")
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @Column(name = "user_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private var id: Integer = _
-  def setId(value:Integer):Unit = id = value
+
+  def setId(value: Integer): Unit = id = value
+
   def getId = id
 
-  @Column(name="account", nullable = false)
+  @Column(name = "account", nullable = false)
   private var username: String = _
-  def setUsername(value:String):Unit = username = value
+
+  def setUsername(value: String): Unit = username = value
+
   def getUsername = username
 
   @JsonIgnore
-  @Column(name="password")
-  private var password:String = _
-  def setPassword(value:String):Unit = password = value
+  @Column(name = "password")
+  private var password: String = _
+
+  def setPassword(value: String): Unit = password = value
+
   def getPassword = password
 
-  @Column(name="phone_number")
-  private var phoneNumber:String = _
-  def setPhoneNumber(phoneNumber:String) = this.phoneNumber = phoneNumber
+  @Column(name = "phone_number")
+  private var phoneNumber: String = _
+
+  def setPhoneNumber(phoneNumber: String) = this.phoneNumber = phoneNumber
+
   def getPhoneNumber = phoneNumber
 
-  @Column(name="email")
-  private var email:String = _
-  def setEmail(email:String) = this.email = email
+  @Column(name = "email")
+  private var email: String = _
+
+  def setEmail(email: String) = this.email = email
+
   def getEmail = email
 
-  @Column(name="register_datetime", nullable = false)
-  private var registerDate:Date = _
-  def setRegisterDate(date: Date) = this.registerDate=date
+  @Column(name = "register_datetime", nullable = false)
+  private var registerDate: Date = _
+
+  def setRegisterDate(date: Date) = this.registerDate = date
+
   def getRegisterDate = registerDate
 
-  @Column(name="last_activite_datetime")
-  private var lastActiviteDate:Date = _
-  def setLastActiviteDate(date: Date) = this.lastActiviteDate=date
+  @Column(name = "last_activite_datetime")
+  private var lastActiviteDate: Date = _
+
+  def setLastActiviteDate(date: Date) = this.lastActiviteDate = date
+
   def getLastActiviteDate = lastActiviteDate
 
-  def this(username:String, password: String) {
+  def this(username: String, password: String) {
     this()
     setUsername(username)
     setPassword(password)
   }
 
-  def this(id:Integer, username:String, phoneNumber:String, email:String,registerDate:Date, lastActiviteDate:Date) {
+  def this(id: Integer, username: String, phoneNumber: String, email: String, registerDate: Date, lastActiviteDate: Date) {
     this()
     setId(id)
     setUsername(username)
-    this.phoneNumber=phoneNumber
-    this.email=email
-    this.registerDate=registerDate
-    this.lastActiviteDate=lastActiviteDate
+    this.phoneNumber = phoneNumber
+    this.email = email
+    this.registerDate = registerDate
+    this.lastActiviteDate = lastActiviteDate
   }
 }

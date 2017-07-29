@@ -14,8 +14,8 @@ import org.springframework.http.{HttpStatus, MediaType}
 import org.springframework.util.LinkedMultiValueMap
 
 @SpringApplicationConfiguration(classes = Array(classOf[MainClass]))
-class RestServiceTestCases extends ITTestBase{
-  override def getBearer():String = {
+class RestServiceTestCases extends ITTestBase {
+  override def getBearer(): String = {
     encryptionManager.encrypt("FACEBOOK\\123456:" + new Date().getTime)
   }
 
@@ -31,7 +31,7 @@ class RestServiceTestCases extends ITTestBase{
     data.add("password", getPassword());
 
     val entity = post(
-      "http://localhost" + (if(0 == port)  "" else (":" + port)) + "/register",
+      "https://localhost" + (if (0 == port) "" else (":" + port)) + "/register",
       data,
       Arrays.asList(MediaType.APPLICATION_XML),
       classOf[Map[String, Object]])
@@ -43,7 +43,7 @@ class RestServiceTestCases extends ITTestBase{
   @throws[Exception]
   def testLoginBySiteToken(): Unit = {
     val entity = get(
-      "http://localhost" + (if(0 == port)  "" else (":" + port)) + "/rest/v1/user",
+      "https://localhost" + (if (0 == port) "" else (":" + port)) + "/rest/v1/user",
       Arrays.asList(MediaType.APPLICATION_JSON),
       classOf[String])
 

@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext
   */
 //@EnableAutoConfiguration
 //@RequestMapping(Array("/rest/v1"))
-//@RestController
+@RestController
 class UserRegister {
   val logger = Logger.getLogger(this.getClass())
 

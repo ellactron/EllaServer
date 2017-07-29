@@ -2,9 +2,10 @@ package com.ellactron.provissioning.user.services;
 
 import com.ellactron.common.models.Account;
 import com.ellactron.provissioning.configuration.RepositoryConfiguration;
-import com.ellactron.provissioning.configuration.ServiceConfigure;
+import com.ellactron.provissioning.configuration.ServiceConfiguration;
 import com.ellactron.provissioning.services.AccountService;
 import com.google.common.base.Function;
+import net.tinybrick.security.configure.CryptionConfiguration;
 import net.tinybrick.test.web.unit.ServiceUnitTestBase;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -21,10 +23,12 @@ import java.util.Date;
  * Created by ji.wang on 2017-07-03.
  */
 @SpringApplicationConfiguration(value = {
-        ServiceConfigure.class,
+        ServiceConfiguration.class,
+        CryptionConfiguration.class,
         RepositoryConfiguration.class,
         ServiceTestCase.TestConfiguration.class
 })
+//@TestPropertySource({"classpath:config/config.properties"})
 public class ServiceTestCase extends ServiceUnitTestBase {
     Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -40,11 +44,12 @@ public class ServiceTestCase extends ServiceUnitTestBase {
     AccountService accountService;
 
     @Test
+    @Transactional
     public void testRegisterUser() {
         try {
             accountService.registerUser(
                     new Account(
-                            "username@domain.com",
+                            "test@domain.com",
                             "pa55w0rd"), true);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

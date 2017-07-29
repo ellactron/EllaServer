@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, R
 @RestController
 @EnableAutoConfiguration
 @RequestMapping(Array("/rest/v1"))
-class DeviceRegister{
+class DeviceRegister {
   @RequestMapping(
     value = Array("/device/announce"),
     method = Array(RequestMethod.PUT),
@@ -22,7 +22,7 @@ class DeviceRegister{
       MediaType.TEXT_HTML_VALUE))
   @ResponseBody
   def register(name: String): Map[String, Object] = {
-    val responseBody:Map[String, Object] = new HashMap()
+    val responseBody: Map[String, Object] = new HashMap()
     responseBody.put("Greeting", "Hello!")
     responseBody
   }
