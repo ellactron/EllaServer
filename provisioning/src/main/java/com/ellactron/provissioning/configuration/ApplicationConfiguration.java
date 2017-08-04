@@ -13,7 +13,6 @@ import org.springframework.context.annotation.PropertySource;
 @Import({RepositoryConfiguration.class})
 @PropertySource({"classpath:config/config.properties"})
 public class ApplicationConfiguration {
-
 }
 
 
