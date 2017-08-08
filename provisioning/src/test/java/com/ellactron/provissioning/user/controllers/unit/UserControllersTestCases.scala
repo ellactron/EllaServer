@@ -20,7 +20,7 @@ import net.tinybrick.web.configure.ApplicationCoreConfigure
 import org.json.JSONObject
 import org.junit.{Assert, Test}
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.SpringApplicationConfiguration
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.http.MediaType
 import org.springframework.test.context.TestPropertySource
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 
 @TestPropertySource(locations = Array("classpath:config/config.properties"))
 //@ComponentScan
-@SpringApplicationConfiguration(classes = Array(
+@SpringBootTest(classes = Array(
   classOf[ApplicationCoreConfigure],
   classOf[SecurityConfiguration],
   classOf[SecuritySocialConfigure],

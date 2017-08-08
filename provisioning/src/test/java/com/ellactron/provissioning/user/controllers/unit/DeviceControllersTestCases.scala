@@ -7,7 +7,7 @@ import net.tinybrick.security.social.configure.SecuritySocialConfigure
 import net.tinybrick.test.web.unit.ControllerTestBase
 import net.tinybrick.web.configure.ApplicationCoreConfigure
 import org.junit.Test
-import org.springframework.boot.test.SpringApplicationConfiguration
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.test.context.TestPropertySource
   */
 
 @TestPropertySource(locations = Array("classpath:config/config.properties"))
-@SpringApplicationConfiguration(classes = Array(
+@SpringBootTest(classes = Array(
   classOf[ApplicationCoreConfigure],
   classOf[SecurityConfiguration],
   classOf[SecuritySocialConfigure],

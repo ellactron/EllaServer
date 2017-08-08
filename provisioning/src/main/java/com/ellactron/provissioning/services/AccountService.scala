@@ -9,7 +9,7 @@ import com.ellactron.provissioning.entities.User
 import com.ellactron.provissioning.exceptions.{RecordVarifyException, TokenExpiryException, UserIsExistingException}
 import com.ellactron.provissioning.repositories.UsersRepository
 import com.ellactron.provissioning.utils.MySQL
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.EnableTransactionManagement
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @Service
 @EnableTransactionManagement
 class AccountService {
-  private val logger = Logger.getLogger(this.getClass.getName)
+  private val logger = LogManager.getLogger(this.getClass.getName)
 
   @Autowired private val usersRepository: UsersRepository = null
 

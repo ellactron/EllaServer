@@ -13,7 +13,7 @@ import com.ellactron.common.models.Account
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.security.authentication.{Authority, ISecurityService, Principal}
 import net.tinybrick.security.social.IOAuth2SecurityService
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.{Authentication, AuthenticationException}
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class SecurityService extends IOAuth2SecurityService[String] with ISecurityService[Principal] {
-  val logger = Logger.getLogger(this.getClass())
+  val logger = LogManager.getLogger(this.getClass())
   @Autowired val accountService: AccountService = null
   @Autowired val encryptionManager: IEncryptionManager = null
 

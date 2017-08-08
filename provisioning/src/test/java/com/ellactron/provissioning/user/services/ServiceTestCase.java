@@ -7,11 +7,12 @@ import com.ellactron.provissioning.services.AccountService;
 import com.google.common.base.Function;
 import net.tinybrick.security.configure.CryptionConfiguration;
 import net.tinybrick.test.web.unit.ServiceUnitTestBase;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ import java.util.Date;
 /**
  * Created by ji.wang on 2017-07-03.
  */
-@SpringApplicationConfiguration(value = {
+@SpringBootTest(classes = {
         ServiceConfiguration.class,
         CryptionConfiguration.class,
         RepositoryConfiguration.class,
@@ -30,7 +31,7 @@ import java.util.Date;
 })
 //@TestPropertySource({"classpath:config/config.properties"})
 public class ServiceTestCase extends ServiceUnitTestBase {
-    Logger logger = Logger.getLogger(this.getClass().getName());
+    Logger logger = LogManager.getLogger(this.getClass().getName());
 
     @Configuration
     static class TestConfiguration {

@@ -5,14 +5,14 @@ import java.io.{File, FileInputStream}
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.test.web.it.IntegrationTestBase
 import net.tinybrick.utils.rest.IRestClient.AUTHENTICATION_METHOD
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.{LogManager, Logger}
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
   * Created by ji.wang on 2017-05-09.
   */
 class ITTestBase extends IntegrationTestBase {
-  private[it] val logger: Logger = Logger.getLogger(this.getClass)
+  private[it] val logger: Logger = LogManager.getLogger(this.getClass)
 
   override def getAuthenticationMethod: AUTHENTICATION_METHOD = AUTHENTICATION_METHOD.Bearer
 

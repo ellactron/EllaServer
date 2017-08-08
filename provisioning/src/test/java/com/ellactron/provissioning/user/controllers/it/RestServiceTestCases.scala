@@ -9,11 +9,11 @@ import java.util.{Arrays, Date, Map}
 import com.ellactron.provissioning.MainClass
 import net.tinybrick.utils.rest.IRestClient.AUTHENTICATION_METHOD
 import org.junit.{Assert, Test}
-import org.springframework.boot.test.SpringApplicationConfiguration
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.{HttpStatus, MediaType}
 import org.springframework.util.LinkedMultiValueMap
 
-@SpringApplicationConfiguration(classes = Array(classOf[MainClass]))
+@SpringBootTest(classes = Array(classOf[MainClass]))
 class RestServiceTestCases extends ITTestBase {
   override def getBearer(): String = {
     encryptionManager.encrypt("FACEBOOK\\123456:" + new Date().getTime)

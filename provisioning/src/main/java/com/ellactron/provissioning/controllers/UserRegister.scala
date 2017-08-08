@@ -7,7 +7,7 @@ import com.ellactron.common.forms.{CredentialForm, DeviceTGT}
 import com.ellactron.provissioning.services.SecurityService
 import net.tinybrick.security.authentication.filter.tools.IEncryptionManager
 import net.tinybrick.utils.json.JsonMapper
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpStatus, MediaType, ResponseEntity}
 import org.springframework.web.bind.annotation._
@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext
 //@RequestMapping(Array("/rest/v1"))
 @RestController
 class UserRegister {
-  val logger = Logger.getLogger(this.getClass())
+  val logger = LogManager.getLogger(this.getClass())
 
   @Autowired private val appContext: WebApplicationContext = null
   @Autowired private val securityService: SecurityService = null

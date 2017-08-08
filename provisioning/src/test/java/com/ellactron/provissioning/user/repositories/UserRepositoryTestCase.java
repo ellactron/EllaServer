@@ -5,11 +5,12 @@ import com.ellactron.provissioning.entities.User;
 import com.ellactron.provissioning.repositories.UsersRepository;
 import com.ellactron.provissioning.utils.MySQL;
 import net.tinybrick.test.web.unit.DbUnitTestBase;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.List;
 /**
  * Created by ji.wang on 2017-07-02.
  */
-@SpringApplicationConfiguration(RepositoryConfiguration.class)
+@SpringBootTest(classes = RepositoryConfiguration.class)
 public class UserRepositoryTestCase extends DbUnitTestBase {
-    Logger logger = Logger.getLogger(this.getClass().getName());
+    Logger logger = LogManager.getLogger(this.getClass().getName());
     @Autowired
     private UsersRepository usersRepository;
 
